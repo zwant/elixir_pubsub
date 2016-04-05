@@ -8,6 +8,7 @@ defmodule ElixirPubsub.Router do
   scope "/api", ElixirPubsub do
     pipe_through :api
 
-    post "/publish/:topic", PublisherController, :new
+    post "/topic/:topic", PublisherController, :new
+    get "/topic/:topic", PublisherController, :get
   end
 end

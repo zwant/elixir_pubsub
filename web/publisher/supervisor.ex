@@ -7,7 +7,7 @@ defmodule ElixirPubsub.TopicAndRegistrySupervisor do
 
     def init(:ok) do
         children = [
-            supervisor(ElixirPubsub.Topic.Supervisor, [[name: ElixirPubsub.Topic.Supervisor]]),
+            supervisor(ElixirPubsub.Topic.Supervisor, []),
             worker(ElixirPubsub.TopicRegistry, [])
         ]
 
@@ -18,12 +18,14 @@ end
 defmodule ElixirPubsub.Topic.Supervisor do
     use Supervisor
 
-    def start_link(opts \\ []) do
-        Supervisor.start_link(__MODULE__, :ok, opts)
+    @name ElixirPubsub.Topic.Supervisor
+
+    def start_link do
+        Supervisor.start_link(__MODULE__, :ok, name: @name)
     end
 
     def start_topic do
-        Supervisor.start_child(ElixirPubsub.Topic.Supervisor, [])
+        Supervisor.start_child(@name, [])
     end
 
     def init(:ok) do
